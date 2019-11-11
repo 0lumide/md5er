@@ -7,4 +7,6 @@
         anim id est laborum.
     </string>
     <string name="md5_hash">Hash (md5)</string>
+    <string name="enable_process_text">Activate md5er</string>
+    <string name="try_it_out">Try it out</string>
 </resources>
