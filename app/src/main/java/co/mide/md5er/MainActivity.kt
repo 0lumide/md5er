@@ -9,23 +9,28 @@ import android.content.pm.PackageManager
 import android.content.ComponentName
 
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharedPrefString = "37F9CA"
-        val sharedPreference : SharedPreferences = getSharedPreferences(sharedPrefString, Context.MODE_PRIVATE)
-        val enabledPref = "IS_ENABLED"
+        val sharedPreference : SharedPreferences
+                = getSharedPreferences(SharedPrefConstants.SHARED_PREF_STRING, Context.MODE_PRIVATE)
 
         enable_switch.setOnCheckedChangeListener { _, isChecked ->
             test_edit_test.isEnabled = isChecked
-            sharedPreference.edit().putBoolean(enabledPref, isChecked).apply()
+            sharedPreference.edit().putBoolean(SharedPrefConstants.ENABLED_PREF, isChecked).apply()
             toggleProcessText(isChecked)
+            copy_switch.isEnabled = isChecked
         }
-        enable_switch.isChecked = sharedPreference.getBoolean(enabledPref, true)
+
+        copy_switch.setOnCheckedChangeListener { _, isChecked ->
+            sharedPreference.edit().putBoolean(SharedPrefConstants.SHOULD_COPY_PREF, isChecked).apply()
+        }
+
+        enable_switch.isChecked = sharedPreference.getBoolean(SharedPrefConstants.ENABLED_PREF, true)
+        copy_switch.isChecked = sharedPreference.getBoolean(SharedPrefConstants.SHOULD_COPY_PREF, false)
     }
 
     private fun toggleProcessText(shouldEnable: Boolean) {

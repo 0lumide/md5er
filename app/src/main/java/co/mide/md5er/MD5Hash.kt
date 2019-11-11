@@ -3,9 +3,9 @@ package co.mide.md5er
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import android.content.Intent
 import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
+import android.content.*
 
 
 class MD5Hash : AppCompatActivity() {
@@ -13,13 +13,34 @@ class MD5Hash : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Use toString() to get String in case of Spannable
         val input = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString()
 
-        Toast.makeText(applicationContext, input.md5(), Toast.LENGTH_LONG).show()
+        val hash = input.md5()
 
+        val sharedPreference : SharedPreferences
+                = getSharedPreferences(SharedPrefConstants.SHARED_PREF_STRING, Context.MODE_PRIVATE)
+
+        val shouldCopy = sharedPreference.getBoolean(SharedPrefConstants.SHOULD_COPY_PREF, false)
+
+        if(shouldCopy) {
+            //copy hash to clipboard
+            copyToClipboard(hash)
+            Toast.makeText(applicationContext, R.string.hash_copied, Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, hash, Toast.LENGTH_LONG).show()
+        }
         finish()
     }
+
+
+    private fun copyToClipboard(text : String?) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("md5 hash", text)
+        clipboard.setPrimaryClip(clip)
+    }
 }
+
 
 /*
  * author: Phan Van Linh

@@ -9,4 +9,6 @@
     <string name="md5_hash">Hash (md5)</string>
     <string name="enable_process_text">Activate md5er</string>
     <string name="try_it_out">Try it out</string>
+    <string name="enable_copy_md5">Copy md5 hash to clipboard</string>
+    <string name="hash_copied">Hash copied to Clipboard</string>
 </resources>
